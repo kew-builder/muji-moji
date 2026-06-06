@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
-import { useApp } from '@/context/AppContext'
+import { useState } from 'react'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { booking } from '@/lib/translations'
 
 interface FormState {
@@ -12,8 +12,8 @@ type Status = 'idle' | 'loading' | 'success' | 'error'
 
 export default function BookingSection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const t = booking[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   const [form, setForm] = useState<FormState>({ name: '', phone: '', date: '', time: '', guests: '2', note: '' })
   const [status, setStatus] = useState<Status>('idle')
@@ -21,7 +21,7 @@ export default function BookingSection() {
   const inputStyle = { width: '100%', padding: '14px 16px', fontSize: 14, fontFamily: ff, border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg)', color: 'var(--text-primary)', outline: 'none', transition: 'var(--transition)' }
   const labelStyle = { fontSize: 12, fontWeight: 500 as const, color: 'var(--text-secondary)', marginBottom: 6, display: 'block' as const, fontFamily: ff, letterSpacing: '0.3px' }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: { preventDefault(): void }) => {
     e.preventDefault()
     setStatus('loading')
     try {
@@ -80,8 +80,8 @@ export default function BookingSection() {
               <label style={labelStyle}>{t.time}</label>
               <select style={inputStyle} value={form.time} onChange={e => setForm({ ...form, time: e.target.value })} required>
                 <option value="">--</option>
-                {['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'].map(t => (
-                  <option key={t} value={t}>{t}</option>
+                {['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'].map(timeSlot => (
+                  <option key={timeSlot} value={timeSlot}>{timeSlot}</option>
                 ))}
               </select>
             </div>

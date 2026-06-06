@@ -1,12 +1,12 @@
 'use client'
 
-import { useApp } from '@/context/AppContext'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { footer } from '@/lib/translations'
 
 export default function Footer() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const t = footer[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   return (
     <footer style={{ background: 'var(--text-primary)', color: 'rgba(255,255,255,0.5)', padding: '48px 0' }}>

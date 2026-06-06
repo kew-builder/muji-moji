@@ -1,5 +1,7 @@
 export type Lang = 'en' | 'th'
 
+export type MenuItem = { name: string; desc: string; price: number; img: string }
+
 export const nav = {
   links: [
     { id: 'menu',    en: 'Menu',    th: 'เมนู' },
@@ -32,7 +34,7 @@ export const hero = {
   },
 }
 
-export const menu = {
+export const menu: Record<Lang, { label: string; title: string; sub: string; categories: string[]; items: Record<string, MenuItem[]> }> = {
   en: {
     label: 'Menu',
     title: 'Our Menu',

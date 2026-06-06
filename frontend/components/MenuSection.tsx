@@ -1,17 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { useApp } from '@/context/AppContext'
-import { menu } from '@/lib/translations'
+import { useApp, useThaiFont } from '@/context/AppContext'
+import { menu, type MenuItem } from '@/lib/translations'
 
 export default function MenuSection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const [activeCat, setActiveCat] = useState(0)
   const data = menu[lang]
   const catName = data.categories[activeCat]
-  type MenuItem = { name: string; desc: string; price: number; img: string }
-  const items = (data.items as unknown as Record<string, MenuItem[]>)[catName] ?? []
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
+  const items: MenuItem[] = data.items[catName] ?? []
 
   return (
     <section id="menu" className="section" style={{ background: 'var(--bg)' }}>
@@ -40,9 +39,8 @@ export default function MenuSection() {
           {items.map((item, i) => (
             <div
               key={i}
-              style={{ display: 'flex', alignItems: 'center', gap: 20, padding: 24, background: 'var(--surface)', border: '1px solid var(--border-light)', borderRadius: 8, transition: 'var(--transition)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = 'var(--shadow-md)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--accent-light)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = 'none'; (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border-light)' }}
+              className="menu-card"
+              style={{ display: 'flex', alignItems: 'center', gap: 20, padding: 24, background: 'var(--surface)', border: '1px solid var(--border-light)', borderRadius: 8 }}
             >
               <img src={item.img} alt={item.name} style={{ width: 64, height: 64, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }} />
               <div style={{ flex: 1 }}>

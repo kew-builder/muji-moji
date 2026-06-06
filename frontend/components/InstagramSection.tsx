@@ -1,6 +1,6 @@
 'use client'
 
-import { useApp } from '@/context/AppContext'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { instagram } from '@/lib/translations'
 
 const posts = [
@@ -14,8 +14,8 @@ const posts = [
 
 export default function InstagramSection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const t = instagram[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   return (
     <section className="section" style={{ background: 'var(--bg-deep)', paddingBottom: 80 }}>

@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useMemo, type ReactNode } from 'react'
 import type { Lang } from '@/lib/translations'
 
 type HeroStyle = 'fullscreen' | 'split' | 'minimal'
@@ -24,6 +24,8 @@ const AppContext = createContext<AppContextValue | null>(null)
 
 const DEFAULTS: Tweaks = { theme: 'warm', heroStyle: 'fullscreen', headingWeight: 'light' }
 
+const THEME_MAP: Record<Theme, string> = { warm: '', forest: 'forest', dark: 'dark' }
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>('en')
   const [tweaks, setTweaks] = useState<Tweaks>(DEFAULTS)
@@ -33,8 +35,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    const themeMap: Record<Theme, string> = { warm: '', forest: 'forest', dark: 'dark' }
-    document.documentElement.setAttribute('data-theme', themeMap[tweaks.theme])
+    document.documentElement.setAttribute('data-theme', THEME_MAP[tweaks.theme])
   }, [tweaks.theme])
 
   useEffect(() => {
@@ -46,8 +47,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (el) el.textContent = `.section-head h2 { font-weight: ${w}; letter-spacing: ${ls}; font-size: ${fs}; }`
   }, [tweaks.headingWeight])
 
+  const value = useMemo(
+    () => ({ lang, setLang, tweaks, setTweak }),
+    [lang, tweaks]
+  )
+
   return (
-    <AppContext.Provider value={{ lang, setLang, tweaks, setTweak }}>
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   )
@@ -57,4 +63,9 @@ export function useApp() {
   const ctx = useContext(AppContext)
   if (!ctx) throw new Error('useApp must be used inside AppProvider')
   return ctx
+}
+
+export function useThaiFont() {
+  const { lang } = useApp()
+  return lang === 'th' ? 'var(--font-noto-thai)' : undefined
 }

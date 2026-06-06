@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useApp } from '@/context/AppContext'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { gallery } from '@/lib/translations'
 
 const photos = [
@@ -17,9 +17,9 @@ const photos = [
 
 export default function GallerySection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const [lightbox, setLightbox] = useState<number | null>(null)
   const t = gallery[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   return (
     <section id="gallery" className="section" style={{ background: 'var(--bg-deep)' }}>
@@ -35,13 +35,12 @@ export default function GallerySection() {
           {photos.map((p, i) => (
             <div
               key={i}
+              className="gal-card"
               onClick={() => setLightbox(i)}
               style={{ breakInside: 'avoid', marginBottom: 16, borderRadius: 8, overflow: 'hidden', cursor: 'pointer', position: 'relative' }}
-              onMouseEnter={e => { const ov = e.currentTarget.querySelector('.gal-hover') as HTMLElement; if (ov) ov.style.opacity = '1' }}
-              onMouseLeave={e => { const ov = e.currentTarget.querySelector('.gal-hover') as HTMLElement; if (ov) ov.style.opacity = '0' }}
             >
               <img src={p.src} alt={p.label} style={{ width: '100%', aspectRatio: `1/${p.h}`, objectFit: 'cover', display: 'block' }} />
-              <div className="gal-hover" style={{ position: 'absolute', inset: 0, background: 'rgba(44,36,32,0.25)', opacity: 0, transition: 'var(--transition)', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+              <div className="gal-hover" style={{ position: 'absolute', inset: 0, background: 'rgba(44,36,32,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5">
                   <circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="21" y2="21" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" />
                 </svg>

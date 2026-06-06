@@ -79,9 +79,14 @@ export default function TweaksPanel() {
       offsetRef.current = { x: startR - (ev.clientX - sx), y: startB - (ev.clientY - sy) }
       clamp()
     }
-    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up) }
+    const up = () => {
+      window.removeEventListener('mousemove', move)
+      window.removeEventListener('mouseup', up)
+      window.removeEventListener('blur', up)
+    }
     window.addEventListener('mousemove', move)
     window.addEventListener('mouseup', up)
+    window.addEventListener('blur', up)
   }
 
   return (

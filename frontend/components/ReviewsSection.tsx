@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useApp } from '@/context/AppContext'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { reviews } from '@/lib/translations'
 
 export default function ReviewsSection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const [active, setActive] = useState(0)
   const t = reviews[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   return (
     <section id="reviews" className="section" style={{ background: 'var(--bg)' }}>

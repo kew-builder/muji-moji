@@ -1,12 +1,12 @@
 'use client'
 
-import { useApp } from '@/context/AppContext'
+import { useApp, useThaiFont } from '@/context/AppContext'
 import { location } from '@/lib/translations'
 
 export default function LocationSection() {
   const { lang } = useApp()
+  const ff = useThaiFont()
   const t = location[lang]
-  const ff = lang === 'th' ? 'var(--font-noto-thai)' : undefined
 
   return (
     <section id="location" className="section" style={{ background: 'var(--bg)' }}>
