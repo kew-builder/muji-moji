@@ -4,8 +4,20 @@ import { useState } from 'react'
 import { useApp, useThaiFont } from '@/context/AppContext'
 import { booking } from '@/lib/translations'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+const PHONE_RE = /^0\d{8,9}$/
+
+function todayISO() {
+  return new Date().toISOString().split('T')[0]
+}
+
 interface FormState {
   name: string; phone: string; date: string; time: string; guests: string; note: string
+}
+
+interface FormErrors {
+  phone?: string; date?: string; time?: string
 }
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
@@ -17,15 +29,36 @@ export default function BookingSection() {
 
   const [form, setForm] = useState<FormState>({ name: '', phone: '', date: '', time: '', guests: '2', note: '' })
   const [status, setStatus] = useState<Status>('idle')
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const inputStyle = { width: '100%', padding: '14px 16px', fontSize: 14, fontFamily: ff, border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg)', color: 'var(--text-primary)', outline: 'none', transition: 'var(--transition)' }
   const labelStyle = { fontSize: 12, fontWeight: 500 as const, color: 'var(--text-secondary)', marginBottom: 6, display: 'block' as const, fontFamily: ff, letterSpacing: '0.3px' }
 
+  const validate = (): FormErrors => {
+    const errs: FormErrors = {}
+    if (!PHONE_RE.test(form.phone)) {
+      errs.phone = lang === 'th' ? 'เบอร์โทรไม่ถูกต้อง (0XXXXXXXXX)' : 'Invalid phone number (0XXXXXXXXX)'
+    }
+    if (!form.date || form.date < todayISO()) {
+      errs.date = lang === 'th' ? 'กรุณาเลือกวันที่ถูกต้อง' : 'Please select a valid date'
+    }
+    if (!form.time) {
+      errs.time = lang === 'th' ? 'กรุณาเลือกเวลา' : 'Please select a time'
+    }
+    return errs
+  }
+
   const handleSubmit = async (e: { preventDefault(): void }) => {
     e.preventDefault()
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
+      return
+    }
+    setErrors({})
     setStatus('loading')
     try {
-      const res = await fetch('http://localhost:5249/api/bookings', {
+      const res = await fetch(`${API_URL}/api/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, guests: Number(form.guests) }),
@@ -71,10 +104,12 @@ export default function BookingSection() {
             <div style={{ gridColumn: 'span 2' }}>
               <label style={labelStyle}>{t.phone}</label>
               <input style={inputStyle} type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} required />
+              {errors.phone && <span style={{ fontSize: 12, color: '#c0392b', marginTop: 4, display: 'block' }}>{errors.phone}</span>}
             </div>
             <div>
               <label style={labelStyle}>{t.date}</label>
-              <input style={inputStyle} type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} required />
+              <input style={inputStyle} type="date" min={todayISO()} value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} required />
+              {errors.date && <span style={{ fontSize: 12, color: '#c0392b', marginTop: 4, display: 'block' }}>{errors.date}</span>}
             </div>
             <div>
               <label style={labelStyle}>{t.time}</label>
@@ -84,6 +119,7 @@ export default function BookingSection() {
                   <option key={timeSlot} value={timeSlot}>{timeSlot}</option>
                 ))}
               </select>
+              {errors.time && <span style={{ fontSize: 12, color: '#c0392b', marginTop: 4, display: 'block' }}>{errors.time}</span>}
             </div>
             <div>
               <label style={labelStyle}>{t.guests}</label>
