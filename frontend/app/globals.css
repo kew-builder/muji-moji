@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MujiMoji Café — Design Tokens
+   ============================================================ */
+
+:root {
+  /* Warm Light (default) */
+  --bg: #FAF6F1;
+  --bg-deep: #F0EBE3;
+  --surface: #FFFFFF;
+  --surface-warm: #F5EFE7;
+  --text-primary: #2C2420;
+  --text-secondary: #7A6B5E;
+  --text-muted: #A89888;
+  --accent: #8B7355;
+  --accent-light: #B8A48C;
+  --accent-hover: #6E5A42;
+  --border: #E5DDD3;
+  --border-light: #EDE7DF;
+  --shadow-sm: 0 1px 3px rgba(44,36,32,0.04);
+  --shadow-md: 0 4px 16px rgba(44,36,32,0.06);
+  --shadow-lg: 0 8px 32px rgba(44,36,32,0.08);
+  --nav-height: 72px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="forest"] {
+  --bg: #F4F7F4;
+  --bg-deep: #E8EDE6;
+  --surface: #FFFFFF;
+  --surface-warm: #EFF3EC;
+  --text-primary: #1E2B22;
+  --text-secondary: #5A6E5C;
+  --text-muted: #8A9E8C;
+  --accent: #5B7A5E;
+  --accent-light: #8FAF8C;
+  --accent-hover: #466348;
+  --border: #D4DED2;
+  --border-light: #E2EBE0;
+  --shadow-sm: 0 1px 3px rgba(30,43,34,0.04);
+  --shadow-md: 0 4px 16px rgba(30,43,34,0.06);
+  --shadow-lg: 0 8px 32px rgba(30,43,34,0.08);
+}
+
+[data-theme="dark"] {
+  --bg: #1A1613;
+  --bg-deep: #231F1B;
+  --surface: #2C2621;
+  --surface-warm: #352E28;
+  --text-primary: #F0EBE3;
+  --text-secondary: #B8A48C;
+  --text-muted: #7A6B5E;
+  --accent: #C4A882;
+  --accent-light: #D4BE9E;
+  --accent-hover: #DDD0B8;
+  --border: #3D352E;
+  --border-light: #332C26;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.15);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Tailwind v4 theme mapping */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-surface: var(--surface);
+  --color-surface-warm: var(--surface-warm);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+
+  --font-sans: var(--font-dm-sans), sans-serif;
+  --font-thai: var(--font-noto-thai), sans-serif;
+  --font-accent: var(--font-cormorant), serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.th { font-family: var(--font-thai); }
+.accent-font { font-family: var(--font-accent); }
+
+/* Section */
+.section { padding: 120px 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+/* Section heading */
+.section-head { text-align: center; margin-bottom: 64px; }
+.section-head .label {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-head h2 {
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.section-head .subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-light); }
+
+::selection { background: var(--accent); color: #fff; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.7s ease-out forwards; }
