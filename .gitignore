@@ -1,0 +1,53 @@
+# ──────────────────────────────────────────────
+# .NET / C# (backend)
+# ──────────────────────────────────────────────
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Publish output
+publish/
+*.pubxml
+*.pubxml.user
+
+# ──────────────────────────────────────────────
+# Node / Next.js (frontend has its own .gitignore,
+# these catch anything at root level)
+# ──────────────────────────────────────────────
+node_modules/
+.next/
+out/
+.vercel/
+
+# ──────────────────────────────────────────────
+# Design handoff / extracted assets
+# ──────────────────────────────────────────────
+MujiMoji-handoff.zip
+extracted_zip/
+
+# ──────────────────────────────────────────────
+# Environment & secrets
+# ──────────────────────────────────────────────
+.env
+.env.local
+.env*.local
+appsettings.local.json
+
+# ──────────────────────────────────────────────
+# OS / editor
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.pem
+.idea/
+.vscode/settings.json
